@@ -2,6 +2,7 @@ import 'package:conditional_builder/conditional_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:social_app/layout/social_app/social_layout.dart';
 import 'package:social_app/modules/social_login_screen/social_login_screen.dart';
 import 'package:social_app/shared/components/components.dart';
 
@@ -21,8 +22,8 @@ class SocialRegisterScreen extends StatelessWidget {
       create: (BuildContext context) => SocialRegisterCubit(),
       child: BlocConsumer<SocialRegisterCubit, SocialRegisterStates>(
         listener: (context, state) {
-          if (state is SocialRegisterSuccessState) {
-
+          if (state is SocialCreateUserSuccessState) {
+            navigateAndFinish(context, SocialLayout());
           }
         },
         builder: (context, state) {
@@ -85,7 +86,8 @@ class SocialRegisterScreen extends StatelessWidget {
                           type: TextInputType.visiblePassword,
                           suffix: SocialRegisterCubit.get(context).suffix,
                           onSubmit: (value) {},
-                          isPassword: SocialRegisterCubit.get(context).isPassword,
+                          isPassword:
+                              SocialRegisterCubit.get(context).isPassword,
                           suffixPressed: () {
                             SocialRegisterCubit.get(context)
                                 .changePasswordVisibility();

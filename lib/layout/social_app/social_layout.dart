@@ -37,7 +37,7 @@ class SocialLayout extends StatelessWidget {
             },
             items: [
               BottomNavigationBarItem(
-                  icon: Icon(IconBroken.Home), label: 'Feeds'),
+                  icon: Icon(IconBroken.Home), label: 'Home'),
               BottomNavigationBarItem(
                   icon: Icon(IconBroken.Chat), label: 'Chats'),
               BottomNavigationBarItem(

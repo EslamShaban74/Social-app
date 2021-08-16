@@ -30,6 +30,7 @@ class SocialRegisterCubit extends Cubit<SocialRegisterStates> {
         email: email,
         uId: value.user.uid,
         phone: phone,
+        isEmailVerified: false,
       );
     }).catchError((error) {
       emit(SocialRegisterErrorState(error.toString()));

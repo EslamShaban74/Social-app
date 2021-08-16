@@ -16,6 +16,7 @@ class SocialLayout extends StatelessWidget {
           appBar: AppBar(
             title: Text(
               'News Feed',
+
             ),
           ),
           body: ConditionalBuilder(
@@ -66,11 +67,15 @@ class SocialLayout extends StatelessWidget {
                         ),
                       ),
                     ),
+                  Center(
+                    child: Text('Eslam Shaban',style: TextStyle(fontSize: 25.0,),),
+                  )
                 ],
               );
             },
             fallback: (context) => Center(child: CircularProgressIndicator()),
           ),
+
         );
       },
     );

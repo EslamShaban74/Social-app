@@ -9,6 +9,7 @@ import 'package:social_app/shared/bloc_observer.dart';
 import 'package:social_app/shared/components/constants.dart';
 import 'package:social_app/shared/network/local/cache_helper.dart';
 import 'package:social_app/shared/network/remote/dio_helper.dart';
+import 'package:social_app/shared/style/themes.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -45,9 +46,8 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Social app',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
+        theme: lightTheme,
+        darkTheme: darkTheme,
         home: startWidget,
       ),
     );

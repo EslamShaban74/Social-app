@@ -17,6 +17,7 @@ Widget defaultFormField({
 }) {
   return TextFormField(
     controller: controller,
+    style: TextStyle(color: Colors.black),
     keyboardType: type,
     obscureText: isPassword,
     onFieldSubmitted: onSubmit,

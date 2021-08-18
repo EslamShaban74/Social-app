@@ -17,20 +17,22 @@ class SocialRegisterCubit extends Cubit<SocialRegisterStates> {
     @required String password,
     @required String phone,
   }) {
+    print('hello');
+
     emit(SocialRegisterLoadingState());
 
     FirebaseAuth.instance
-        .createUserWithEmailAndPassword(email: email, password: password)
+        .createUserWithEmailAndPassword(
+      email: email,
+      password: password,
+    )
         .then((value) {
-      print(value.user.email);
-      print(value.user.uid);
-
       userCreate(
-        name: name,
-        email: email,
         uId: value.user.uid,
         phone: phone,
-        isEmailVerified: false,
+        email: email,
+        name: name,
+
       );
     }).catchError((error) {
       emit(SocialRegisterErrorState(error.toString()));
@@ -40,26 +42,30 @@ class SocialRegisterCubit extends Cubit<SocialRegisterStates> {
   void userCreate({
     @required String name,
     @required String email,
-    @required String uId,
     @required String phone,
-    @required String image,
-    @required bool isEmailVerified,
+    @required String uId,
   }) {
     SocialUserModel model = SocialUserModel(
-      name,
-      email,
-      phone,
-      uId,
-      image,
-      isEmailVerified,
+      name: name,
+      email: email,
+      phone: phone,
+      uId: uId,
+      bio: 'write you bio ...',
+      cover: 'https://image.freepik.com/free-photo/photo-attractive-bearded-young-man-with-cherful-expression-makes-okay-gesture-with-both-hands-likes-something-dressed-red-casual-t-shirt-poses-against-white-wall-gestures-indoor_273609-16239.jpg',
+      image: 'https://image.freepik.com/free-photo/photo-attractive-bearded-young-man-with-cherful-expression-makes-okay-gesture-with-both-hands-likes-something-dressed-red-casual-t-shirt-poses-against-white-wall-gestures-indoor_273609-16239.jpg',
+      isEmailVerified: false,
     );
+
     FirebaseFirestore.instance
         .collection('users')
         .doc(uId)
         .set(model.toMap())
-        .then((value) {
+        .then((value)
+    {
       emit(SocialCreateUserSuccessState());
-    }).catchError((error) {
+    })
+        .catchError((error) {
+      print(error.toString());
       emit(SocialCreateUserErrorState(error.toString()));
     });
   }
@@ -70,7 +76,7 @@ class SocialRegisterCubit extends Cubit<SocialRegisterStates> {
   void changePasswordVisibility() {
     isPassword = !isPassword;
     suffix =
-        isPassword ? Icons.visibility_outlined : Icons.visibility_off_outlined;
+    isPassword ? Icons.visibility_outlined : Icons.visibility_off_outlined;
 
     emit(SocialRegisterChangePasswordVisibilityState());
   }

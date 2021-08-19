@@ -48,6 +48,7 @@ class MyApp extends StatelessWidget {
         title: 'Social app',
         theme: lightTheme,
         darkTheme: darkTheme,
+        themeMode: ThemeMode.light,
         home: startWidget,
       ),
     );

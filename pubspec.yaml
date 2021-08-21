@@ -39,6 +39,7 @@ dependencies:
   smooth_page_indicator: ^0.2.3
   fluttertoast: ^7.1.6
   carousel_slider: ^3.0.0
+  image_picker: ^0.8.3+2
 
   #firebase:
   firebase_core: ^1.4.0

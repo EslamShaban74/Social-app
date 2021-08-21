@@ -15,6 +15,9 @@ class EditProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var userModel = SocialCubit.get(context).userModel;
+
+    var profileImage = SocialCubit.get(context).profileImage;
+
     return BlocConsumer<SocialCubit, SocialStates>(
       listener: (context, state) {},
       builder: (context, state) {
@@ -79,15 +82,19 @@ class EditProfileScreen extends StatelessWidget {
                                   Theme.of(context).scaffoldBackgroundColor,
                               child: CircleAvatar(
                                 radius: 60.0,
-                                backgroundImage: NetworkImage(
-                                  '${userModel.image}',
-                                ),
+                                backgroundImage: profileImage == null
+                                    ? NetworkImage(
+                                        '${userModel.image}',
+                                      )
+                                    : FileImage(profileImage),
                               ),
                             ),
                             CircleAvatar(
                               radius: 20.0,
                               child: IconButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  SocialCubit.get(context).getProfileImage();
+                                },
                                 icon: Icon(
                                   IconBroken.Camera,
                                   size: 16.0,

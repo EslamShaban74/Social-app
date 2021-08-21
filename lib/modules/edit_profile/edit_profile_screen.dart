@@ -5,28 +5,44 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:social_app/layout/social_app/cubit/cubit.dart';
 import 'package:social_app/layout/social_app/cubit/states.dart';
+import 'package:social_app/modules/settings/settings_screen.dart';
 import 'package:social_app/shared/components/components.dart';
 import 'package:social_app/shared/style/icon_broken.dart';
 
 class EditProfileScreen extends StatelessWidget {
   var nameController = TextEditingController();
+  var phoneController = TextEditingController();
   var bioController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    var userModel = SocialCubit.get(context).userModel;
-
-    var profileImage = SocialCubit.get(context).profileImage;
-
     return BlocConsumer<SocialCubit, SocialStates>(
       listener: (context, state) {},
       builder: (context, state) {
+        var userModel = SocialCubit.get(context).userModel;
+        var profileImage = SocialCubit.get(context).profileImage;
+        var coverImage = SocialCubit.get(context).coverImage;
+
+        nameController.text = userModel.name;
+        phoneController.text = userModel.phone;
+        bioController.text = userModel.bio;
+
         return Scaffold(
           appBar: AppBar(
             title: Text('Edit Profile'),
             actions: [
-              defaultTextButton(function: () {}, text: 'UPDATE'),
-              SizedBox(width: 15.0),
+              defaultTextButton(
+                function: () {
+                  SocialCubit.get(context).updateUser(
+                      name: nameController.text,
+                      phone: phoneController.text,
+                      bio: bioController.text);
+                },
+                text: 'Update',
+              ),
+              SizedBox(
+                width: 15.0,
+              ),
             ],
           ),
           body: SingleChildScrollView(
@@ -34,6 +50,12 @@ class EditProfileScreen extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: Column(
                 children: [
+                  if (state is SocialUserUpdateLoadingState)
+                    LinearProgressIndicator(),
+                  if (state is SocialUserUpdateLoadingState)
+                    SizedBox(
+                      height: 10.0,
+                    ),
                   Container(
                     height: 190.0,
                     child: Stack(
@@ -56,18 +78,26 @@ class EditProfileScreen extends StatelessWidget {
                                     ),
                                   ),
                                   image: DecorationImage(
-                                    image: NetworkImage(
-                                      '${userModel.cover}',
-                                    ),
+                                    image: coverImage == null
+                                        ? NetworkImage(
+                                            '${userModel.cover}',
+                                          )
+                                        : FileImage(coverImage),
                                     fit: BoxFit.cover,
                                   ),
                                 ),
                               ),
-                              CircleAvatar(
-                                radius: 20.0,
-                                child: IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(IconBroken.Camera)),
+                              IconButton(
+                                icon: CircleAvatar(
+                                  radius: 20.0,
+                                  child: Icon(
+                                    IconBroken.Camera,
+                                    size: 16.0,
+                                  ),
+                                ),
+                                onPressed: () {
+                                  SocialCubit.get(context).getCoverImage();
+                                },
                               ),
                             ],
                           ),
@@ -89,53 +119,131 @@ class EditProfileScreen extends StatelessWidget {
                                     : FileImage(profileImage),
                               ),
                             ),
-                            CircleAvatar(
-                              radius: 20.0,
-                              child: IconButton(
-                                onPressed: () {
-                                  SocialCubit.get(context).getProfileImage();
-                                },
-                                icon: Icon(
+                            IconButton(
+                              icon: CircleAvatar(
+                                radius: 20.0,
+                                child: Icon(
                                   IconBroken.Camera,
                                   size: 16.0,
                                 ),
                               ),
-                            )
+                              onPressed: () {
+                                SocialCubit.get(context).getProfileImage();
+                              },
+                            ),
                           ],
                         ),
                       ],
                     ),
                   ),
-                  const SizedBox(height: 25.0),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                    child: defaultFormField(
-                        controller: nameController,
-                        type: TextInputType.name,
-                        validate: (String value) {
-                          if (value.isEmpty) {
-                            return 'name must not be empty';
-                          }
-                          return null;
-                        },
-                        label: 'Name',
-                        prefix: IconBroken.User),
+                  SizedBox(
+                    height: 20.0,
                   ),
-                  const SizedBox(height: 15.0),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                    child: defaultFormField(
-                        controller: bioController,
-                        type: TextInputType.text,
-                        validate: (String value) {
-                          if (value.isEmpty) {
-                            return 'Bio must not be empty';
-                          }
-                          return null;
-                        },
-                        label: 'Bio',
-                        prefix: IconBroken.Info_Circle),
-                  )
+                  if (SocialCubit.get(context).profileImage != null ||
+                      SocialCubit.get(context).coverImage != null)
+                    Row(
+                      children: [
+                        if (SocialCubit.get(context).profileImage != null)
+                          Expanded(
+                            child: Column(
+                              children: [
+                                defaultButton(
+                                  function: () {
+                                    SocialCubit.get(context).uploadProfileImage(
+                                      name: nameController.text,
+                                      phone: phoneController.text,
+                                      bio: bioController.text,
+                                    );
+                                  },
+                                  text: 'upload profile',
+                                ),
+                                if (state is SocialUserUpdateLoadingState)
+                                  SizedBox(
+                                    height: 5.0,
+                                  ),
+                                if (state is SocialUserUpdateLoadingState)
+                                  LinearProgressIndicator(),
+                              ],
+                            ),
+                          ),
+                        SizedBox(
+                          width: 5.0,
+                        ),
+                        if (SocialCubit.get(context).coverImage != null)
+                          Expanded(
+                            child: Column(
+                              children: [
+                                defaultButton(
+                                  function: () {
+                                    SocialCubit.get(context).uploadCoverImage(
+                                      name: nameController.text,
+                                      phone: phoneController.text,
+                                      bio: bioController.text,
+                                    );
+                                  },
+                                  text: 'upload cover',
+                                ),
+                                if (state is SocialUserUpdateLoadingState)
+                                  SizedBox(
+                                    height: 5.0,
+                                  ),
+                                if (state is SocialUserUpdateLoadingState)
+                                  LinearProgressIndicator(),
+                              ],
+                            ),
+                          ),
+                      ],
+                    ),
+                  if (SocialCubit.get(context).profileImage != null ||
+                      SocialCubit.get(context).coverImage != null)
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                  defaultFormField(
+                    controller: nameController,
+                    type: TextInputType.name,
+                    validate: (String value) {
+                      if (value.isEmpty) {
+                        return 'name must not be empty';
+                      }
+
+                      return null;
+                    },
+                    label: 'Name',
+                    prefix: IconBroken.User,
+                  ),
+                  SizedBox(
+                    height: 10.0,
+                  ),
+                  defaultFormField(
+                    controller: bioController,
+                    type: TextInputType.text,
+                    validate: (String value) {
+                      if (value.isEmpty) {
+                        return 'bio must not be empty';
+                      }
+
+                      return null;
+                    },
+                    label: 'Bio',
+                    prefix: IconBroken.Info_Circle,
+                  ),
+                  SizedBox(
+                    height: 10.0,
+                  ),
+                  defaultFormField(
+                    controller: phoneController,
+                    type: TextInputType.phone,
+                    validate: (String value) {
+                      if (value.isEmpty) {
+                        return 'phone number must not be empty';
+                      }
+
+                      return null;
+                    },
+                    label: 'Phone',
+                    prefix: IconBroken.Call,
+                  ),
                 ],
               ),
             ),

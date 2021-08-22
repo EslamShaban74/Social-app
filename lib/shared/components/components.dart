@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-
+import 'package:social_app/shared/style/icon_broken.dart';
 
 Widget defaultFormField({
   @required TextEditingController controller,
@@ -59,27 +59,27 @@ Widget defaultButton({
     );
 
 Widget myDivider() => Padding(
-  padding: const EdgeInsetsDirectional.only(
-    start: 20.0,
-  ),
-  child: Container(
-    width: double.infinity,
-    height: 1.0,
-    color: Colors.grey[300],
-  ),
-);
+      padding: const EdgeInsetsDirectional.only(
+        start: 20.0,
+      ),
+      child: Container(
+        width: double.infinity,
+        height: 1.0,
+        color: Colors.grey[300],
+      ),
+    );
 
 Widget defaultTextButton(
-    {@required Function function, @required String text}) =>
+        {@required Function function, @required String text}) =>
     TextButton(onPressed: function, child: Text(text.toUpperCase()));
 
 void navigateTo(context, widget) =>
     Navigator.push(context, MaterialPageRoute(builder: (context) => widget));
 
 void navigateAndFinish(context, widget) => Navigator.pushAndRemoveUntil(
-    context, MaterialPageRoute(builder: (context) => widget), (context) {
-  return false;
-});
+        context, MaterialPageRoute(builder: (context) => widget), (context) {
+      return false;
+    });
 
 Future<bool> showToast({
   @required String text,
@@ -112,6 +112,24 @@ Color chooseToastColor(ToastStates state) {
       break;
   }
   return color;
+}
+
+Widget defaultAppBar({
+  @required context,
+  String title,
+  List<Widget> actions,
+}) {
+  return AppBar(
+    leading: IconButton(
+      icon: Icon(IconBroken.Arrow___Left_2),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    ),
+    title: Text(title),
+    titleSpacing: 5.0,
+    actions: actions,
+  );
 }
 
 // Widget buildListProduct(

@@ -56,7 +56,9 @@ class NewPostScreen extends StatelessWidget {
                   children: [
                     Expanded(
                       child: TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          SocialCubit.get(context).getPostImage();
+                        },
                         child: Row(
                           children: [
                             Icon(IconBroken.Image),

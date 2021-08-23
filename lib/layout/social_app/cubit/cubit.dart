@@ -172,4 +172,18 @@ class SocialCubit extends Cubit<SocialStates> {
       emit(SocialUserUpdateErrorState());
     });
   }
+
+  File postImage;
+
+  Future<void> getPostImage() async {
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      postImage = File(pickedFile.path);
+      emit(SocialPostImagePickedSuccessState());
+    } else {
+      print('no image selected');
+      emit(SocialPostImagePickedErrorState());
+    }
+  }
 }

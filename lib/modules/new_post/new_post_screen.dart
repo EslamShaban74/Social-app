@@ -63,8 +63,8 @@ class NewPostScreen extends StatelessWidget {
                 ),
                 Expanded(
                   child: TextFormField(
+                    controller: textController,
                     maxLines: null,
-                    
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       hintText: 'Whats is on your mind?',

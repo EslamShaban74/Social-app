@@ -13,15 +13,15 @@ class SocialGetUserErrorState extends SocialStates
   SocialGetUserErrorState(this.error);
 }
 
-class SocialGetPostLoadingState extends SocialStates {}
+class SocialGetPostsLoadingState extends SocialStates {}
 
-class SocialGetPostSuccessState extends SocialStates {}
+class SocialGetPostsSuccessState extends SocialStates {}
 
-class SocialGetPostErrorState extends SocialStates
+class SocialGetPostsErrorState extends SocialStates
 {
   final String error;
 
-  SocialGetPostErrorState(this.error);
+  SocialGetPostsErrorState(this.error);
 }
 
 class SocialChangeBottomNavState extends SocialStates {}

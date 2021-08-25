@@ -50,42 +50,44 @@ class SocialCubit extends Cubit<SocialStates> {
   List<String> titles = [
     'Home',
     'Chats',
-    'Add Post',
+    'Post',
     'Users',
     'Settings',
   ];
 
   void changeBottomNav(int index) {
-    if (index == 2) {
+    if (index == 2)
       emit(SocialNewPostState());
-    } else {
+    else {
       currentIndex = index;
       emit(SocialChangeBottomNavState());
     }
   }
 
   File profileImage;
-
   var picker = ImagePicker();
 
   Future<void> getProfileImage() async {
-    final pickedFile = await picker.pickImage(
+    final pickedFile = await picker.getImage(
       source: ImageSource.gallery,
     );
 
     if (pickedFile != null) {
       profileImage = File(pickedFile.path);
+      print(pickedFile.path);
       emit(SocialProfileImagePickedSuccessState());
     } else {
-      print('No Image Selected');
+      print('No image selected.');
       emit(SocialProfileImagePickedErrorState());
     }
   }
 
+  // image_picker7901250412914563370.jpg
+
   File coverImage;
 
   Future<void> getCoverImage() async {
-    final pickedFile = await picker.pickImage(
+    final pickedFile = await picker.getImage(
       source: ImageSource.gallery,
     );
 
@@ -93,7 +95,7 @@ class SocialCubit extends Cubit<SocialStates> {
       coverImage = File(pickedFile.path);
       emit(SocialCoverImagePickedSuccessState());
     } else {
-      print('No Image Selected');
+      print('No image selected.');
       emit(SocialCoverImagePickedErrorState());
     }
   }
@@ -111,11 +113,17 @@ class SocialCubit extends Cubit<SocialStates> {
         .putFile(profileImage)
         .then((value) {
       value.ref.getDownloadURL().then((value) {
+        //emit(SocialUploadProfileImageSuccessState());
         print(value);
-        updateUser(name: name, phone: phone, bio: bio, image: value);
-      }).catchError((error) {});
-
-      emit(SocialUploadProfileImageErrorState());
+        updateUser(
+          name: name,
+          phone: phone,
+          bio: bio,
+          image: value,
+        );
+      }).catchError((error) {
+        emit(SocialUploadProfileImageErrorState());
+      });
     }).catchError((error) {
       emit(SocialUploadProfileImageErrorState());
     });
@@ -134,18 +142,50 @@ class SocialCubit extends Cubit<SocialStates> {
         .putFile(coverImage)
         .then((value) {
       value.ref.getDownloadURL().then((value) {
+        //emit(SocialUploadCoverImageSuccessState());
         print(value);
-        updateUser(name: name, phone: phone, bio: bio, cover: value);
-      }).catchError((error) {});
-
-      emit(SocialUploadCoverImageErrorState());
+        updateUser(
+          name: name,
+          phone: phone,
+          bio: bio,
+          cover: value,
+        );
+      }).catchError((error) {
+        emit(SocialUploadCoverImageErrorState());
+      });
     }).catchError((error) {
       emit(SocialUploadCoverImageErrorState());
     });
   }
 
+//   void updateUserImages({
+//   @required String name,
+//   @required String phone,
+//   @required String bio,
+// })
+//   {
+//     emit(SocialUserUpdateLoadingState());
+//
+//     if(coverImage != null)
+//     {
+//       uploadCoverImage();
+//     } else if(profileImage != null)
+//     {
+//       uploadProfileImage();
+//     } else if (coverImage != null && profileImage != null)
+//     {
+//
+//     } else
+//       {
+//         updateUser(
+//           name: name,
+//           phone: phone,
+//           bio: bio,
+//         );
+//       }
+//   }
+
   void updateUser({
-    context,
     @required String name,
     @required String phone,
     @required String bio,
@@ -177,13 +217,15 @@ class SocialCubit extends Cubit<SocialStates> {
   File postImage;
 
   Future<void> getPostImage() async {
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    final pickedFile = await picker.getImage(
+      source: ImageSource.gallery,
+    );
 
     if (pickedFile != null) {
       postImage = File(pickedFile.path);
       emit(SocialPostImagePickedSuccessState());
     } else {
-      print('no image selected');
+      print('No image selected.');
       emit(SocialPostImagePickedErrorState());
     }
   }
@@ -205,7 +247,12 @@ class SocialCubit extends Cubit<SocialStates> {
         .putFile(postImage)
         .then((value) {
       value.ref.getDownloadURL().then((value) {
-        createPost(dateTime: dateTime, text: text);
+        print(value);
+        createPost(
+          text: text,
+          dateTime: dateTime,
+          postImage: value,
+        );
       }).catchError((error) {
         emit(SocialCreatePostErrorState());
       });
@@ -217,6 +264,7 @@ class SocialCubit extends Cubit<SocialStates> {
   void createPost({
     @required String dateTime,
     @required String text,
+    String postImage,
   }) {
     emit(SocialCreatePostLoadingState());
 
@@ -230,7 +278,7 @@ class SocialCubit extends Cubit<SocialStates> {
     );
 
     FirebaseFirestore.instance
-        .collection('post')
+        .collection('posts')
         .add(model.toMap())
         .then((value) {
       emit(SocialCreatePostSuccessState());
@@ -240,7 +288,6 @@ class SocialCubit extends Cubit<SocialStates> {
   }
 
   List<PostModel> posts = [];
-
 
   void getPosts() {
     FirebaseFirestore.instance.collection('posts').get().then((value) {

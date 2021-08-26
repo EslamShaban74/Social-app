@@ -251,7 +251,7 @@ class FeedsScreen extends StatelessWidget
                             width: 5.0,
                           ),
                           Text(
-                            '0',
+                            '85',
                             style: Theme.of(context).textTheme.caption,
                           ),
                         ],
@@ -278,7 +278,7 @@ class FeedsScreen extends StatelessWidget
                             width: 5.0,
                           ),
                           Text(
-                            '0 comment',
+                            '59 comments',
                             style: Theme.of(context).textTheme.caption,
                           ),
                         ],

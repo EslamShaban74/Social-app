@@ -66,7 +66,7 @@ class NewPostScreen extends StatelessWidget
                     ),
                     Expanded(
                       child: Text(
-                        'Abdullah Mansour',
+                        'Eslam Shaban',
                         style: TextStyle(
                           height: 1.4,
                         ),

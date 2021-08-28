@@ -38,6 +38,14 @@ class SocialUploadProfileImageSuccessState extends SocialStates {}
 
 class SocialUploadProfileImageErrorState extends SocialStates {}
 
+class SocialGetAllUsersSuccessState extends SocialStates {}
+
+class SocialGetAllUsersErrorState extends SocialStates {
+  final String error;
+
+  SocialGetAllUsersErrorState(this.error);
+}
+
 class SocialUploadCoverImageSuccessState extends SocialStates {}
 
 class SocialUploadCoverImageErrorState extends SocialStates {}

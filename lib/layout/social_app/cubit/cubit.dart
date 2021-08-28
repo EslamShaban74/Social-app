@@ -316,7 +316,7 @@ class SocialCubit extends Cubit<SocialStates> {
     });
   }
 
-  void getLikes() {
+  void getLikes(String postId) {
     FirebaseFirestore.instance
         .collection('posts')
         .doc(postId)
@@ -325,7 +325,7 @@ class SocialCubit extends Cubit<SocialStates> {
         .set({
       'like': true,
     }).then((value) {
-      return null;
+     emit(SocialLikePostSuccessState());
     });
   }
 }

@@ -14,21 +14,21 @@ class ChatsScreen extends StatelessWidget {
       listener: (context, state) {},
       builder: (context, state) {
         return ConditionalBuilder(
-          condition:SocialCubit.get(context).users.length>0,
-          builder: (context) =>
-              ListView.separated(
-                  itemBuilder: (context, index) =>
-                      buildChatItem(SocialCubit.get(context).users[index]),
-                  separatorBuilder: (context, index) => myDivider(),
-                  itemCount: 10),
+          condition: SocialCubit.get(context).users.length > 0,
+          builder: (context) => ListView.separated(
+            physics: BouncingScrollPhysics(),
+            itemBuilder: (context, index) =>
+                buildChatItem(SocialCubit.get(context).users[index]),
+            separatorBuilder: (context, index) => myDivider(),
+            itemCount: SocialCubit.get(context).users.length,
+          ),
           fallback: (context) => Center(child: CircularProgressIndicator()),
         );
       },
     );
   }
 
-  Widget buildChatItem(SocialUserModel model) =>
-      InkWell(
+  Widget buildChatItem(SocialUserModel model) => InkWell(
         onTap: () {},
         child: Padding(
           padding: const EdgeInsets.all(20.0),
@@ -37,35 +37,16 @@ class ChatsScreen extends StatelessWidget {
               CircleAvatar(
                 radius: 25.0,
                 backgroundImage: NetworkImage(
-                  '',
+                  '${model.image}',
                 ),
               ),
               SizedBox(
                 width: 15.0,
               ),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Text(
-                          'Eslam Shaban',
-                          style: TextStyle(
-                            height: 1.4,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 15.0,
-                        ),
-                        Icon(
-                          Icons.check_circle,
-                          color: defaultColor,
-                          size: 16.0,
-                        ),
-                      ],
-                    ),
-                  ],
+              Text(
+                '${model.name}',
+                style: TextStyle(
+                  height: 1.4,
                 ),
               ),
             ],

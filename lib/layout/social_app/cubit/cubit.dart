@@ -308,7 +308,7 @@ class SocialCubit extends Cubit<SocialStates> {
     });
   }
 
-  void getLikes(String postId) {
+  void likePost(String postId) {
     FirebaseFirestore.instance
         .collection('posts')
         .doc(postId)

@@ -5,7 +5,6 @@ import 'package:social_app/layout/social_app/cubit/cubit.dart';
 import 'package:social_app/layout/social_app/cubit/states.dart';
 import 'package:social_app/models/social_user_model.dart';
 import 'package:social_app/shared/components/components.dart';
-import 'package:social_app/shared/style/colors.dart';
 
 class ChatsScreen extends StatelessWidget {
   @override

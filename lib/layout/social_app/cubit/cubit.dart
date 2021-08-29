@@ -13,7 +13,6 @@ import 'package:social_app/modules/feeds/feeds_screen.dart';
 import 'package:social_app/modules/new_post/new_post_screen.dart';
 import 'package:social_app/modules/settings/settings_screen.dart';
 import 'package:social_app/modules/users/users_screen.dart';
-import 'package:social_app/shared/components/components.dart';
 import 'package:social_app/shared/components/constants.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
@@ -56,6 +55,7 @@ class SocialCubit extends Cubit<SocialStates> {
   ];
 
   void changeBottomNav(int index) {
+    if (index == 1) getUsers();
     if (index == 2)
       emit(SocialNewPostState());
     else {
@@ -322,21 +322,21 @@ class SocialCubit extends Cubit<SocialStates> {
       emit(SocialLikePostErrorState(error.toString()));
     });
   }
+
   List<SocialUserModel> users = [];
 
-  void getUsers()
-  {
-    FirebaseFirestore.instance.collection('users').get().then((value)
-    {
-      value.docs.forEach((element)
-      {
-        users.add(SocialUserModel.fromJson(element.data()));
-      });
+  void getUsers() {
+    if (users.length == 0)
+      FirebaseFirestore.instance.collection('users').get().then((value) {
+        value.docs.forEach((element) {
+          if (element.data()['uId'] != userModel.uId)
+            users.add(SocialUserModel.fromJson(element.data()));
+        });
 
-      emit(SocialGetAllUsersSuccessState());
-    }).catchError((error) {
-      print(error.toString());
-      emit(SocialGetAllUsersErrorState(error.toString()));
-    });
+        emit(SocialGetAllUsersSuccessState());
+      }).catchError((error) {
+        print(error.toString());
+        emit(SocialGetAllUsersErrorState(error.toString()));
+      });
   }
 }

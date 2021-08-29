@@ -22,6 +22,11 @@ class ChatDetailsScreen extends StatelessWidget {
           ],
         ),
       ),
+      body: Column(
+        children: [
+
+        ],
+      ),
     );
   }
 }

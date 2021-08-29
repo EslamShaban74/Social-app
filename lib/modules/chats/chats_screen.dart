@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_app/layout/social_app/cubit/cubit.dart';
 import 'package:social_app/layout/social_app/cubit/states.dart';
 import 'package:social_app/models/social_user_model.dart';
+import 'package:social_app/modules/chat_details/chat_details_screen.dart';
 import 'package:social_app/shared/components/components.dart';
 
 class ChatsScreen extends StatelessWidget {
@@ -17,7 +18,7 @@ class ChatsScreen extends StatelessWidget {
           builder: (context) => ListView.separated(
             physics: BouncingScrollPhysics(),
             itemBuilder: (context, index) =>
-                buildChatItem(SocialCubit.get(context).users[index]),
+                buildChatItem(SocialCubit.get(context).users[index], context),
             separatorBuilder: (context, index) => myDivider(),
             itemCount: SocialCubit.get(context).users.length,
           ),
@@ -27,16 +28,39 @@ class ChatsScreen extends StatelessWidget {
     );
   }
 
-  Widget buildChatItem(SocialUserModel model) => InkWell(
-        onTap: () {},
+  Widget buildChatItem(SocialUserModel model, context) => InkWell(
+        onTap: () {
+          navigateTo(
+            context,
+            ChatDetailsScreen(
+              userModel: model,
+            ),
+          );
+        },
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Row(
             children: [
-              CircleAvatar(
-                radius: 25.0,
-                backgroundImage: NetworkImage(
-                  '${model.image}',
+              Align(
+                alignment: AlignmentDirectional.centerStart,
+                child: Stack(
+                  alignment: AlignmentDirectional.bottomEnd,
+                  children: [
+                    CircleAvatar(
+                      radius: 25.0,
+                      backgroundImage: NetworkImage(
+                        '${model.image}',
+                      ),
+                    ),
+                    CircleAvatar(
+                      radius:7.0,
+                      backgroundColor: Colors.white,
+                      child: CircleAvatar(
+                        radius: 5.0,
+                        backgroundColor: Colors.green,
+                      ),
+                    )
+                  ],
                 ),
               ),
               SizedBox(

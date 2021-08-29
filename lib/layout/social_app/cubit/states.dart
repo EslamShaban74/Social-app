@@ -6,20 +6,42 @@ class SocialGetUserLoadingState extends SocialStates {}
 
 class SocialGetUserSuccessState extends SocialStates {}
 
-class SocialGetUserErrorState extends SocialStates {
+class SocialGetUserErrorState extends SocialStates
+{
   final String error;
 
   SocialGetUserErrorState(this.error);
+}
+
+class SocialGetAllUsersLoadingState extends SocialStates {}
+
+class SocialGetAllUsersSuccessState extends SocialStates {}
+
+class SocialGetAllUsersErrorState extends SocialStates
+{
+  final String error;
+
+  SocialGetAllUsersErrorState(this.error);
 }
 
 class SocialGetPostsLoadingState extends SocialStates {}
 
 class SocialGetPostsSuccessState extends SocialStates {}
 
-class SocialGetPostsErrorState extends SocialStates {
+class SocialGetPostsErrorState extends SocialStates
+{
   final String error;
 
   SocialGetPostsErrorState(this.error);
+}
+
+class SocialLikePostSuccessState extends SocialStates {}
+
+class SocialLikePostErrorState extends SocialStates
+{
+  final String error;
+
+  SocialLikePostErrorState(this.error);
 }
 
 class SocialChangeBottomNavState extends SocialStates {}
@@ -38,14 +60,6 @@ class SocialUploadProfileImageSuccessState extends SocialStates {}
 
 class SocialUploadProfileImageErrorState extends SocialStates {}
 
-class SocialGetAllUsersSuccessState extends SocialStates {}
-
-class SocialGetAllUsersErrorState extends SocialStates {
-  final String error;
-
-  SocialGetAllUsersErrorState(this.error);
-}
-
 class SocialUploadCoverImageSuccessState extends SocialStates {}
 
 class SocialUploadCoverImageErrorState extends SocialStates {}
@@ -53,6 +67,7 @@ class SocialUploadCoverImageErrorState extends SocialStates {}
 class SocialUserUpdateLoadingState extends SocialStates {}
 
 class SocialUserUpdateErrorState extends SocialStates {}
+
 
 // create post
 
@@ -68,10 +83,10 @@ class SocialPostImagePickedErrorState extends SocialStates {}
 
 class SocialRemovePostImageState extends SocialStates {}
 
-class SocialLikePostSuccessState extends SocialStates {}
+// chat
 
-class SocialLikePostErrorState extends SocialStates {
-  final String error;
+class SocialSendMessageSuccessState extends SocialStates {}
 
-  SocialLikePostErrorState(this.error);
-}
+class SocialSendMessageErrorState extends SocialStates {}
+
+class SocialGetMessagesSuccessState extends SocialStates {}

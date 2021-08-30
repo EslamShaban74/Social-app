@@ -57,13 +57,11 @@ class SocialCubit extends Cubit<SocialStates> {
 
   void changeBottomNav(int index) {
     if (index == 1) getUsers();
-
     if (index == 2)
       emit(SocialNewPostState());
-    else {
+    else
       currentIndex = index;
-      emit(SocialChangeBottomNavState());
-    }
+    emit(SocialChangeBottomNavState());
   }
 
   File profileImage;
@@ -331,8 +329,8 @@ class SocialCubit extends Cubit<SocialStates> {
     if (users.length == 0)
       FirebaseFirestore.instance.collection('users').get().then((value) {
         value.docs.forEach((element) {
-        //  if (element.data()['uId'] != userModel.uId)
-            users.add(SocialUserModel.fromJson(element.data()));
+          //  if (element.data()['uId'] != userModel.uId)
+          users.add(SocialUserModel.fromJson(element.data()));
         });
 
         emit(SocialGetAllUsersSuccessState());

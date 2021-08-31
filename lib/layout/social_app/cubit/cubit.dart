@@ -56,12 +56,13 @@ class SocialCubit extends Cubit<SocialStates> {
   ];
 
   void changeBottomNav(int index) {
-    if (index == 1) getUsers();
+
     if (index == 2)
       emit(SocialNewPostState());
-    else
+    else {
       currentIndex = index;
-    emit(SocialChangeBottomNavState());
+      emit(SocialChangeBottomNavState());
+    }
   }
 
   File profileImage;

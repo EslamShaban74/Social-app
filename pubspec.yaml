@@ -35,8 +35,8 @@ dependencies:
   dio:
   hexcolor: ^2.0.3
   shared_preferences: ^2.0.5
-  fluttertoast: ^8.0.3
-  image_picker:
+  fluttertoast: ^7.1.6
+  image_picker: ^0.6.7+22
 
     #firebase
   firebase_core: ^0.5.3
